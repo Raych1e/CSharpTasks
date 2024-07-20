@@ -1,8 +1,24 @@
 ﻿while (true)
 {
+    Console.WriteLine("Введите строку");
     string? input = Console.ReadLine();
     string result;
     bool error = false;
+
+    Console.WriteLine("Введите желаемый метод сортировки: ");
+    Console.WriteLine("1 - Быстрая сортировка (QuickSort)");
+    Console.WriteLine("2 - Сортировка деревом (Tree sort)");
+
+    int sortMethod;
+    try
+    {
+        sortMethod = int.Parse(Console.ReadLine());
+    }
+    catch 
+    { 
+        Console.WriteLine("Ожидалось: 1 или 2");
+        return;
+    }
 
     if (input == null) return;
 
@@ -68,6 +84,130 @@
             break;
         }
     }
-    result = result.Substring(firstIndex, last - firstIndex + 1);
-    Console.WriteLine(result);
+    string longSubstring = result.Substring(firstIndex, last - firstIndex + 1);
+    Console.WriteLine(longSubstring);
+
+    switch(sortMethod)
+    {
+        case 1:
+            {
+                Console.WriteLine("Отсортированный результат: {0}", new string(QuickSort(result.ToCharArray(), 0, result.Length - 1)));
+                break;
+            }
+        case 2:
+            {
+                BinarySearchTree tree = new BinarySearchTree();
+                for (int i = 0; i < result.Length; i++)
+                {
+                    tree.Insert(result[i]);
+                }
+                Console.Write("Отсортированный результат: ");
+                tree.InOrderTraversal();
+                break;
+            }
+    }
+}
+
+static void Swap(char[] array, int i, int j)
+{
+    char temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+}
+
+static int Partition(char[] array, int low, int high)
+{
+    int pivot = array[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (array[j] <= pivot)
+        {
+            i++;
+            Swap(array, i, j);
+        }
+    }
+
+    Swap(array, i + 1, high);
+    return i + 1;
+}
+
+
+static char[] QuickSort(char[] array, int low, int high)
+{
+    if (low < high)
+    {
+        int partitionIndex = Partition(array, low, high);
+        QuickSort(array, low, partitionIndex - 1);
+        QuickSort(array, partitionIndex + 1, high);
+    }
+    return array;
+}
+
+public class BinarySearchTree
+{
+    private class Node
+    {
+        public char data;
+        public Node left;
+        public Node right;
+
+        public Node(char data)
+        {
+            this.data = data;
+            left = null;
+            right = null;
+        }
+    }
+
+    private Node root;
+
+    public BinarySearchTree()
+    {
+        root = null;
+    }
+
+    public void Insert(char data)
+    {
+        root = Insert(root, data);
+    }
+
+    private Node Insert(Node node, char data)
+    {
+        if (node == null)
+        {
+            return new Node(data);
+        }
+
+        if (data < node.data)
+        {
+            node.left = Insert(node.left, data);
+        }
+        else if (data > node.data)
+        {
+            node.right = Insert(node.right, data);
+        }
+        else
+        {
+            node.right = Insert(node.right, data);
+        }
+
+        return node;
+    }
+
+    public void InOrderTraversal()
+    {
+        InOrderTraversal(root);
+    }
+
+    private void InOrderTraversal(Node node)
+    {
+        if (node != null)
+        {
+            InOrderTraversal(node.left);
+            Console.Write(node.data + " ");
+            InOrderTraversal(node.right);
+        }
+    }
 }
