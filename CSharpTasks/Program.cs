@@ -49,4 +49,25 @@
         }
         Console.WriteLine("Символ \"{0}\" повторялся {1} раз", unique.ToList()[i], counter);
     }
+
+    int firstIndex = 0;
+    int last = 0;
+
+    for (int i = 0; i < result.Length; i++)
+    {
+        if ("aeiouy".Contains(result[i]))
+        {
+            firstIndex = i;
+            for (int j = i; j < result.Length; j++)
+            {
+                if ("aeiouy".Contains(result[j]))
+                {
+                    last = j;
+                }
+            }
+            break;
+        }
+    }
+    result = result.Substring(firstIndex, last - firstIndex + 1);
+    Console.WriteLine(result);
 }
