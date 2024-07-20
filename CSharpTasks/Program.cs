@@ -1,6 +1,11 @@
-﻿while (true)
+﻿using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text.Json.Nodes;
+using System.Text.Json;
+
+while (true)
 {
-    Console.WriteLine("Введите строку");
     string? input = Console.ReadLine();
     string result;
     bool error = false;
@@ -24,7 +29,7 @@
 
     foreach (char symbol in input)
     {
-        if (symbol < 'a'  ||  symbol > 'z')
+        if (symbol < 'a' || symbol > 'z')
         {
             Console.WriteLine("{0} - некорректный символ!", symbol);
             error = true;
@@ -87,7 +92,7 @@
     string longSubstring = result.Substring(firstIndex, last - firstIndex + 1);
     Console.WriteLine(longSubstring);
 
-    switch(sortMethod)
+    switch (sortMethod)
     {
         case 1:
             {
@@ -106,7 +111,33 @@
                 break;
             }
     }
+    GetRandomNumberAndRemoveSymbol(result.Length, result);
 }
+
+
+static async void GetRandomNumberAndRemoveSymbol(int max, string symbols)
+{
+    int randomNumber;
+    using (HttpClient client = new HttpClient())
+    {
+        HttpResponseMessage responseMessage = await client.GetAsync($"http://www.randomnumberapi.com/api/v1.0/random?min=0&max={max}&count=1");
+        if (responseMessage.IsSuccessStatusCode)
+        {
+            var responseBody = await responseMessage.Content.ReadAsStringAsync();
+            responseBody = responseBody.Remove(0, 1);
+            responseBody = responseBody.Remove(responseBody.Length - 2, 1);
+            randomNumber = int.Parse(responseBody);
+        }
+        else
+        {
+            Random random = new Random();
+            randomNumber = random.Next(0, max);
+    }
+    }
+    symbols = symbols.Remove(randomNumber, 1);
+    Console.WriteLine("Удален символ на позиции {0}: {1}", randomNumber, symbols);
+}
+
 
 static void Swap(char[] array, int i, int j)
 {
