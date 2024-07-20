@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/CSharpTasks/CSharpTasks.csproj
+/CSharpTasks/Program.cs
+/CSharpTasks/Program.cs
