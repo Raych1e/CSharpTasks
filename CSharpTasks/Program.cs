@@ -19,8 +19,8 @@ while (true)
     {
         sortMethod = int.Parse(Console.ReadLine());
     }
-    catch 
-    { 
+    catch
+    {
         Console.WriteLine("Ожидалось: 1 или 2");
         return;
     }
@@ -132,7 +132,7 @@ static async void GetRandomNumberAndRemoveSymbol(int max, string symbols)
         {
             Random random = new Random();
             randomNumber = random.Next(0, max);
-    }
+        }
     }
     symbols = symbols.Remove(randomNumber, 1);
     Console.WriteLine("Удален символ на позиции {0}: {1}", randomNumber, symbols);
