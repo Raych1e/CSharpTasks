@@ -2,8 +2,21 @@
 {
     string? input = Console.ReadLine();
     string result;
+    bool error = false;
 
     if (input == null) return;
+
+    foreach (char symbol in input)
+    {
+        if (symbol < 'a'  ||  symbol > 'z')
+        {
+            Console.WriteLine("{0} - некорректный символ!", symbol);
+            error = true;
+        }
+    }
+
+    if (error) return;
+
 
     if (input.Length % 2 == 0)
     {
