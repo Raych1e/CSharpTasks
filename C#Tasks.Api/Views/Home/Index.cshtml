@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model ResultModel
+
+<div class="text-center">
+    <form method="get" asp-action="GetResult" asp-controller="Home">
+        <div class="form-group">
+            <input type="text" class="form-control" name="RequestEnter" placeholder="Строка" />
+        <small class="form-text text-muted">Английские буквы, без чисел</small>
+        </div>
+
+        <div class="form-group">
+            <label for="quickSort">Быстрая сортировка</label>
+            <input name="RequestSortMethod" id="quickSort" type="radio" id="quickSort" value="1" checked />
+        </div>
+        <div class="form-group">
+            <label for="treeSort">Сортировка древом</label>
+            <input name="RequestSortMethod" id="treeSort" type="radio" value="2" />
+        </div>
+
+        <button style="margin-bottom:50px" type="submit" class="btn btn-primary">Отправить</button>
+        
+    </form>
+
+    <div class="form-group">
+        <input type="text" class="form-control" value="@Model.Result" disabled />
+        <small class="form-text text-muted">Результат</small>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" value="@Model.SortedString" disabled />
+        <small class="form-text text-muted">Отсортированный результат</small>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" value="@Model.LongSubstring" disabled />
+        <small class="form-text text-muted">Самая длинная подстрока</small>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" value="@Model.ResultWithoutSymbol" disabled />
+        <small class="form-text text-muted">Строка с удаленным символом</small>
+    </div>
+    <div class="form-group">
+        @if(Model.Unique != null)
+        {
+            <br/>
+            @foreach (var item in Model.Unique)
+            {
+                <span>@item</span>
+                <br />
+            }
+
+            <small class="form-text text-muted">Количество уникальных символов в строке</small>
+        }
+    </div>
+</div>
