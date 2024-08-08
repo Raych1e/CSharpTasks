@@ -5,11 +5,32 @@ namespace C_Tasks.Api.Repository
 {
     public class ResultRepository
     {
+        private readonly IConfiguration _configuration;
+        public ResultRepository(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public List<string> GetBlacklist()
+        {
+            return _configuration.GetSection("Settings:Blacklist").Get<List<string>>();
+        }
+
         [HttpGet]
         public (string, List<string>) GetResult(string input)
         {
             string result = "";
             List<string> errors = new List<string>();
+
+            var blacklist = GetBlacklist();
+            foreach (string item in blacklist)
+            {
+                if (input == item)
+                {
+                    errors.Add($"Строка {item} входит в список запрещенных слов");
+                }
+            }
+
             foreach (char symbol in input)
             {
                 if (symbol < 'a' || symbol > 'z')
