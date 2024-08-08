@@ -37,7 +37,7 @@ namespace C_Tasks.Api.Repository
                 {
                     errors.Add($"Символ {symbol} некорректен");
                 }
-            } 
+            }
 
             if (input.Length % 2 == 0)
             {
